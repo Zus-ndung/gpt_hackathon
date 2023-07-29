@@ -53,7 +53,7 @@ export default function Chat(props: { apiKeyApp: string }) {
   const handleTranslate = async () => {
     const inputElement = document.getElementById('input_element');
     if (inputElement) {
-      inputElement.value = '';
+      inputElement.nodeValue = '';
     }
 
     handleMessages();
