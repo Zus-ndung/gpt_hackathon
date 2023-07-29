@@ -15,6 +15,11 @@ import { useState } from 'react';
 import { MdAutoAwesome, MdBolt, MdEdit, MdPerson } from 'react-icons/md';
 import AutoScroll from '@brianmcallister/react-auto-scroll';
 
+interface Message {
+  input: string;
+  output: string;
+}
+
 export default function Chat(props: { apiKeyApp: string }) {
   // *** If you use .env.local variable for your API key, method which we recommend, use the apiKey variable commented below
   const { apiKeyApp } = props;
@@ -23,9 +28,9 @@ export default function Chat(props: { apiKeyApp: string }) {
   const [inputCode, setInputCode] = useState<string>('');
   // Response message
   const [outputCode, setOutputCode] = useState<string>('');
-  const [messages, setMessages] = useState<[{ input: string; output: string }]>(
-    [{ input: '', output: '' }],
-  );
+  const [messages, setMessages] = useState<Array<Message>>([
+    { input: '', output: '' },
+  ]);
   // Loading state
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -133,7 +138,7 @@ export default function Chat(props: { apiKeyApp: string }) {
   const handleMessages = () => {
     const input = inputOnSubmit;
     const output = outputCode;
-    const message = { input, output };
+    const message: Message = { input, output };
     const newMessages = [...messages, message];
     setMessages(newMessages);
   };
