@@ -20,7 +20,7 @@ import { Readable } from 'stream';
 const openai = new OpenAI({
   apiKey:
     process.env.API_KEY ||
-    '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',
+    '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',
 });
 
 interface Message {
@@ -82,7 +82,9 @@ export default function Chat(props: { apiKeyApp: string }) {
     setOutputCode(' ');
     setLoading(true);
 
-    const url = process.env.URL || 'http://localhost/ask';
+    const url =
+      process.env.URL ||
+      'http://ec2-18-143-177-11.ap-southeast-1.compute.amazonaws.com/ask';
     const response = await fetch(url, {
       method: 'POST',
       headers: {
