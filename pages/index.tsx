@@ -14,11 +14,20 @@ import {
 import { useState } from 'react';
 import { MdAutoAwesome, MdBolt, MdEdit, MdPerson } from 'react-icons/md';
 import AutoScroll from '@brianmcallister/react-auto-scroll';
+import OpenAI from 'openai';
+import { Readable } from 'stream';
+
+const openai = new OpenAI({
+  apiKey:
+    process.env.API_KEY ||
+    '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',
+});
 
 interface Message {
   input: string;
   output: string;
 }
+interface CreateChatCompletionResponse extends Readable {}
 
 export default function Chat(props: { apiKeyApp: string }) {
   // *** If you use .env.local variable for your API key, method which we recommend, use the apiKey variable commented below
@@ -73,56 +82,37 @@ export default function Chat(props: { apiKeyApp: string }) {
     setOutputCode(' ');
     setLoading(true);
 
-    const inputs = {
-      past_user_inputs: [],
-      generated_responses: [],
-      text: input,
-    };
-
-    // -------------- Fetch --------------
-    const response = await fetch(
-      'https://api-inference.huggingface.co/models/phucnq1591999/SolanaChatBot',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer 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',
-        },
-        // signal: controller.signal,
-        body: JSON.stringify({ inputs }),
+    const url = process.env.URL || 'http://localhost/ask';
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
       },
-    );
-
-    if (!response.ok) {
-      setLoading(false);
-      if (response) {
-        alert(
-          'Something went wrong went fetching from the API. Make sure to use a valid API key.',
-        );
-      }
-      return;
-    }
-
-    const data = response.body;
-    if (!data) {
-      setLoading(false);
-      alert('Something went wrong');
-      return;
-    }
-
+      // signal: controller.signal,
+      body: JSON.stringify({ text: input }),
+    });
     const { generated_text } = await response.json();
-    const speed = 20;
-    let textPosition = 0;
 
-    const typeWrite = () => {
-      setOutputCode(generated_text.substring(0, textPosition));
-      if (textPosition++ < generated_text.length) {
-        setTimeout(typeWrite, speed);
-      } else {
-        setLoading(false);
+    const steam = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      temperature: 0,
+      messages: [
+        {
+          role: 'system',
+          content: 'You answer questions about Solana',
+        },
+        { role: 'user', content: generated_text },
+      ],
+      stream: true,
+    });
+    for await (const part of steam) {
+      const chunk = part.choices[0].delta.content;
+      if (chunk) {
+        setOutputCode((preText) => preText + chunk);
       }
-    };
-    typeWrite();
+    }
+    setLoading(false);
   };
 
   const handleOnChange = (Event: any) => {
@@ -156,7 +146,7 @@ export default function Chat(props: { apiKeyApp: string }) {
         w={{ base: '100%', md: '100%', xl: '100%' }}
         minH={{ base: '70vh', '2xl': '85vh' }}
         maxH={{ base: '100vh', '2xl': '85vh' }}
-        maxW="1000px"
+        maxW="850px"
         pt={'60px'}
       >
         <AutoScroll showOption={false}>
@@ -219,19 +209,11 @@ export default function Chat(props: { apiKeyApp: string }) {
                     <Text
                       color={textColor}
                       fontWeight="600"
-                      fontSize={{ base: 'sm', md: 'md' }}
+                      fontSize={{ base: 'sm', md: '15px' }}
                       lineHeight={{ base: '24px', md: '26px' }}
                     >
                       {inputOnSubmit}
                     </Text>
-                    <Icon
-                      cursor="pointer"
-                      as={MdEdit}
-                      ms="auto"
-                      width="20px"
-                      height="20px"
-                      color={gray}
-                    />
                   </Flex>
                 </Flex>
                 <Flex w="100%">
@@ -314,7 +296,7 @@ export default function Chat(props: { apiKeyApp: string }) {
           alignItems="center"
         >
           <Text fontSize="xs" textAlign="center" color={gray}>
-            We are Leopard
+            We are leopards, but today we don't do it
           </Text>
         </Flex>
       </Flex>
@@ -350,6 +332,7 @@ const MessageElement = (props: { input: string; output: string }) => {
       mx="auto"
       display={output ? 'flex' : 'none'}
       mb={'auto'}
+      mt="30px"
     >
       <Flex w="100%" align={'center'} mb="10px">
         <Flex
@@ -377,19 +360,11 @@ const MessageElement = (props: { input: string; output: string }) => {
           <Text
             color={textColor}
             fontWeight="600"
-            fontSize={{ base: 'sm', md: 'md' }}
+            fontSize={{ base: 'sm', md: '15px' }}
             lineHeight={{ base: '24px', md: '26px' }}
           >
             {input}
           </Text>
-          <Icon
-            cursor="pointer"
-            as={MdEdit}
-            ms="auto"
-            width="20px"
-            height="20px"
-            color={gray}
-          />
         </Flex>
       </Flex>
       <Flex w="100%">

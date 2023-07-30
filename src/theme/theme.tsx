@@ -1,4 +1,9 @@
-import { extendTheme, HTMLChakraProps, ThemingProps } from '@chakra-ui/react';
+import {
+  extendTheme,
+  HTMLChakraProps,
+  ThemingProps,
+  type ThemeConfig,
+} from '@chakra-ui/react';
 import { CardComponent } from './additions/card/card';
 import { buttonStyles } from './components/button';
 import { badgeStyles } from './components/badge';
@@ -8,6 +13,11 @@ import { textareaStyles } from './components/textarea';
 import { switchStyles } from './components/switch';
 import { linkStyles } from './components/link';
 import { globalStyles } from './styles';
+
+const config: ThemeConfig = {
+  initialColorMode: 'dark',
+  useSystemColorMode: false,
+};
 
 export default extendTheme(
   globalStyles,
@@ -19,6 +29,7 @@ export default extendTheme(
   textareaStyles, // textarea styles
   switchStyles, // switch styles
   CardComponent, // card component
+  { config },
 );
 
 export interface CustomCardProps extends HTMLChakraProps<'div'>, ThemingProps {}
