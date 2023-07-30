@@ -18,9 +18,7 @@ import OpenAI from 'openai';
 import { Readable } from 'stream';
 
 const openai = new OpenAI({
-  apiKey:
-    process.env.API_KEY ||
-    'sk-scxwiJP4uECSMq' + 'PLYyBoT3BlbkFJg' + 'Tuv69xXVdU0dr8bjwN8',
+  apiKey: process.env.API_KEY || '',
 });
 
 interface Message {
@@ -32,6 +30,7 @@ interface CreateChatCompletionResponse extends Readable {}
 export default function Chat(props: { apiKeyApp: string }) {
   // *** If you use .env.local variable for your API key, method which we recommend, use the apiKey variable commented below
   const { apiKeyApp } = props;
+  console.log(1, process.env.NEXT_PUBLIC_API_KEY);
   // Input States
   const [inputOnSubmit, setInputOnSubmit] = useState<string>('');
   const [inputCode, setInputCode] = useState<string>('');
