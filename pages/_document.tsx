@@ -6,6 +6,10 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <title>Leopard Solana ChatBot</title>
+        <meta
+          http-equiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        ></meta>
       </Head>
       <body suppressHydrationWarning={true}>
         <Main />
