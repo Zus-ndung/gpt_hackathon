@@ -81,7 +81,8 @@ export default function Chat(props: { apiKeyApp: string }) {
     setLoading(true);
 
     const url =
-      process.env.URL || 'https://ca22-118-70-146-171.ngrok-free.app/ask';
+      process.env.NEXT_PUBLIC_API_KEY ||
+      'https://ca22-118-70-146-171.ngrok-free.app/ask';
     const response = await fetch(url, {
       method: 'POST',
       headers: {
