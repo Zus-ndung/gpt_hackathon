@@ -152,7 +152,7 @@ export default function Chat(props: { apiKeyApp: string }) {
       >
         <AutoScroll showOption={false}>
           <Box
-            maxH={{ base: '80vh', '2xl': '85vh' }}
+            maxH={{ base: '70vh', '2xl': '85vh' }}
             minH={{ base: '70vh', '2xl': '85vh' }}
           >
             {messages &&
