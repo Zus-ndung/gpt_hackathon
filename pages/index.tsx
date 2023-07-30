@@ -20,7 +20,7 @@ import { Readable } from 'stream';
 const openai = new OpenAI({
   apiKey:
     process.env.API_KEY ||
-    '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',
+    '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',
 });
 
 interface Message {

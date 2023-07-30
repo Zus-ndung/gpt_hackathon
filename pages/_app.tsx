@@ -31,7 +31,7 @@ function App({ Component, pageProps }: AppProps<{}>) {
           height="100%"
           overflow="auto"
           position="relative"
-          maxHeight="100%"
+          maxHeight="100vh"
           w={{ base: '100%' }}
           maxWidth={{ base: '100%' }}
           transition="all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1)"
