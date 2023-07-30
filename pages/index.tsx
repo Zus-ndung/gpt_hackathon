@@ -18,7 +18,7 @@ import OpenAI from 'openai';
 import { Readable } from 'stream';
 
 const openai = new OpenAI({
-  apiKey: process.env.API_KEY || '',
+  apiKey: process.env.NEXT_PUBLIC_API_KEY || '',
 });
 
 interface Message {
