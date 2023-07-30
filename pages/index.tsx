@@ -30,7 +30,6 @@ interface CreateChatCompletionResponse extends Readable {}
 export default function Chat(props: { apiKeyApp: string }) {
   // *** If you use .env.local variable for your API key, method which we recommend, use the apiKey variable commented below
   const { apiKeyApp } = props;
-  console.log(1, process.env.NEXT_PUBLIC_API_KEY);
   // Input States
   const [inputOnSubmit, setInputOnSubmit] = useState<string>('');
   const [inputCode, setInputCode] = useState<string>('');
