@@ -81,7 +81,7 @@ export default function Chat(props: { apiKeyApp: string }) {
     setLoading(true);
 
     const url =
-      process.env.URL || 'https://c2c0-101-99-14-10.ngrok-free.app/ask';
+      process.env.URL || 'https://ca22-118-70-146-171.ngrok-free.app/ask';
     const response = await fetch(url, {
       method: 'POST',
       headers: {
